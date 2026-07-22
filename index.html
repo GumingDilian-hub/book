@@ -1,996 +1,593 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-
-<title>
-AI文本原创度优化系统
-</title>
-
-<style>
-
-*{
-box-sizing:border-box;
-}
-
-body{
-margin:0;
-background:#f3f6fb;
-font-family:
-"Microsoft YaHei",
-sans-serif;
-color:#222;
-}
-
-
-.container{
-
-max-width:1000px;
-margin:40px auto;
-padding:20px;
-
-}
-
-
-.card{
-
-background:white;
-border-radius:16px;
-padding:25px;
-margin-bottom:20px;
-
-box-shadow:
-0 5px 20px rgba(0,0,0,.08);
-
-}
-
-
-.logo{
-
-font-size:30px;
-font-weight:bold;
-color:#2563eb;
-
-}
-
-
-.sub{
-
-color:#666;
-margin-top:10px;
-
-}
-
-
-
-textarea{
-
-width:100%;
-height:240px;
-
-border:1px solid #ddd;
-
-border-radius:12px;
-
-padding:15px;
-
-font-size:16px;
-
-}
-
-
-
-select,
-button{
-
-padding:12px 20px;
-
-border-radius:10px;
-
-border:1px solid #ddd;
-
-font-size:15px;
-
-}
-
-
-button{
-
-background:#2563eb;
-
-color:white;
-
-border:none;
-
-cursor:pointer;
-
-}
-
-
-
-button:hover{
-
-opacity:.85;
-
-}
-
-
-
-.progress{
-
-height:22px;
-
-background:#e5e7eb;
-
-border-radius:20px;
-
-overflow:hidden;
-
-}
-
-
-
-.progress-bar{
-
-height:100%;
-
-width:0%;
-
-background:#22c55e;
-
-transition:.5s;
-
-}
-
-
-
-.tag{
-
-display:inline-block;
-
-padding:5px 12px;
-
-margin:4px;
-
-border-radius:20px;
-
-background:#eff6ff;
-
-color:#2563eb;
-
-}
-
-
-
-.report{
-
-line-height:2;
-
-}
-
-
-.small{
-
-font-size:13px;
-
-color:#888;
-
-}
-
-
-</style>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>AI文本原创度优化系统 Pro</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 20% 30%, #0f172a, #020617);
+      font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 25px rgba(99, 102, 241, 0.15);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      border-color: rgba(99, 102, 241, 0.6);
+      box-shadow: 0 0 35px rgba(99, 102, 241, 0.3);
+    }
+
+    .logo {
+      font-size: 32px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #818cf8, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
+    }
+
+    .sub {
+      color: #94a3b8;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 200px;
+      background: rgba(2, 6, 23, 0.7);
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      border-radius: 14px;
+      padding: 16px;
+      font-size: 15px;
+      color: #e2e8f0;
+      resize: vertical;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    textarea:focus {
+      border-color: #818cf8;
+      box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+    }
+
+    select {
+      background: #0f172a;
+      border: 1px solid #4b5563;
+      border-radius: 10px;
+      padding: 10px 18px;
+      color: #e2e8f0;
+      font-size: 14px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    button {
+      padding: 12px 28px;
+      border-radius: 12px;
+      border: none;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #6366f1, #3b82f6);
+      color: white;
+      box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(99, 102, 241, 0.7);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid #6366f1;
+      color: #a5b4fc;
+      margin-left: 12px;
+      padding: 10px 22px;
+    }
+
+    .btn-outline:hover {
+      background: rgba(99, 102, 241, 0.15);
+    }
+
+    .progress {
+      height: 24px;
+      background: rgba(2, 6, 23, 0.8);
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid #4b5563;
+      margin: 12px 0;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #22c55e, #10b981, #14b8a6);
+      box-shadow: 0 0 15px #22c55e;
+      transition: width 0.3s ease;
+      border-radius: 20px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 6px 16px;
+      margin: 5px;
+      border-radius: 20px;
+      background: rgba(99, 102, 241, 0.2);
+      border: 1px solid rgba(99, 102, 241, 0.5);
+      color: #c7d2fe;
+      font-size: 13px;
+      backdrop-filter: blur(4px);
+    }
+
+    .report {
+      line-height: 2.2;
+      color: #cbd5e1;
+    }
+
+    .small {
+      font-size: 13px;
+      color: #64748b;
+      margin-top: 8px;
+    }
+
+    hr {
+      border-color: rgba(99, 102, 241, 0.2);
+      margin: 18px 0;
+    }
+
+    h3 {
+      color: #cbd5e1;
+      margin-top: 0;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Cookie 弹窗样式 */
+    .cookie-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .cookie-box {
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(99, 102, 241, 0.6);
+      border-radius: 24px;
+      padding: 32px;
+      max-width: 480px;
+      width: 90%;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(99, 102, 241, 0.3);
+      color: #e2e8f0;
+      text-align: center;
+    }
+
+    .cookie-box h2 {
+      margin-top: 0;
+      font-size: 24px;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .cookie-box p {
+      color: #cbd5e1;
+      font-size: 15px;
+      line-height: 1.6;
+      margin: 16px 0;
+    }
+
+    .cookie-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .cookie-btn {
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+    }
+
+    .cookie-accept {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: white;
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+    }
+
+    .cookie-accept:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 25px rgba(245, 158, 11, 0.7);
+    }
+
+    .cookie-decline {
+      background: transparent;
+      border: 1px solid #64748b;
+      color: #94a3b8;
+    }
+
+    .cookie-decline:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
 </head>
-
-
 <body>
-
-
-<div class="container">
-
-
-<div class="card">
-
-<div class="logo">
-
-📄 AI文本原创度优化系统
-
-</div>
-
-
-<div class="sub">
-
-智能语义分析 · AI辅助降重 · 原创度提升
-
-</div>
-
-
-</div>
-
-
-
-<div class="card">
-
-
-<h3>
-AI优化引擎
-</h3>
-
-
-<select id="model">
-
-<option>
-ChatGPT-5.5 Pro
-</option>
-
-<option>
-Gemini Ultra
-</option>
-
-<option>
-Claude Opus
-</option>
-
-<option>
-DeepSeek R2
-</option>
-
-<option>
-GLM-5
-</option>
-
-<option>
-Grok Advanced
-</option>
-
-<option>
-Llama 4
-</option>
-
-<option>
-Qwen Max
-</option>
-
-
-</select>
-
-
-<p class="small">
-当前使用旗舰语义优化模型
-</p>
-
-
-</div>
-
-
-
-<div class="card">
-
-
-<h3>
-输入文本
-</h3>
-
-
-<textarea
-id="input"
-placeholder="请输入需要优化的作文、论文或文章">
-</textarea>
-
-
-<br><br>
-
-
-<button onclick="startOptimize()">
-
-开始智能优化
-
-</button>
-
-
-</div>
-
-
-
-<div class="card">
-
-
-<h3>
-AI分析进度
-</h3>
-
-
-<div class="progress">
-
-<div class="progress-bar"
-id="bar">
-
-</div>
-
-</div>
-
-
-<p id="status">
-等待任务...
-</p>
-
-
-</div>
-
-
-
-
-<div class="card">
-
-
-<h3>
-检测报告
-</h3>
-
-
-<div id="report"
-class="report">
-
-暂无报告
-
-</div>
-
-
-</div>
-
-
-
-
-<div class="card">
-
-
-<h3>
-优化结果
-
-<button onclick="downloadText()">
-下载结果
-</button>
-
-</h3>
-
-
-<textarea id="output">
-
-</textarea>
-
-
-</div>
-
-
-</div>
-
+  <!-- Cookie 申请弹窗 -->
+  <div class="cookie-overlay" id="cookieOverlay">
+    <div class="cookie-box">
+      <h2>小饼干申请</h2>
+      <p>
+        本网站使用<strong>小饼干（Cookie）</strong>来提升您的浏览体验。<br>
+        这些小饼干包括：<br>
+        <span style="color:#fbbf24;">巧克力曲奇</span>（功能小饼干）<br>
+        <span style="color:#fbbf24;">燕麦饼干</span>（性能小饼干）<br>
+        <span style="color:#fbbf24;">美味小饼干</span>（广告小饼干）<br>
+        继续使用即表示您同意我们<strong>放置所有小饼干</strong>。
+      </p>
+      <p style="font-size:13px; color:#64748b;">
+        我们尊重您的选择，您也可以拒绝这些美味的小饼干。
+      </p>
+      <div class="cookie-buttons">
+        <button class="cookie-btn cookie-accept" onclick="acceptCookies()">
+          同意所有Cookies
+        </button>
+        <button class="cookie-btn cookie-decline" onclick="declineCookies()">
+          不吃小饼干
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <div class="logo">📄 AI文本原创度优化系统 <span style="font-size:16px; color:#818cf8;">Pro</span></div>
+      <div class="sub">多模态语义混淆 · 跨风格污染注入 · 原创度强制提升</div>
+    </div>
+
+    <div class="card">
+      <h3>优化引擎</h3>
+      <select id="modelSelect">
+        <option>ChatGPT-5.5 Pro</option>
+        <option>Gemini Ultra 2.0</option>
+        <option>Claude Opus 4</option>
+        <option>DeepSeek R2</option>
+        <option>GLM-5</option>
+        <option>Grok Advanced</option>
+        <option>Llama 4</option>
+        <option>Qwen Max</option>
+      </select>
+      <p class="small">当前调用旗舰语义污染模型，输出结果将完全无法被查重识别。</p>
+    </div>
+
+    <div class="card">
+      <h3>输入文本</h3>
+      <textarea id="inputText" placeholder="在此粘贴需要「优化」的作文、论文或文章..."></textarea>
+      <br><br>
+      <button class="btn-primary" onclick="startOptimize()">开始深度优化</button>
+    </div>
+
+    <div class="card">
+      <h3>📊 实时分析进度</h3>
+      <div class="progress">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <p id="statusText" style="color:#94a3b8;">等待任务...</p>
+      <div id="subStatus" style="font-size:13px; color:#6366f1; min-height:20px;"></div>
+    </div>
+
+    <div class="card">
+      <h3>📋 检测报告</h3>
+      <div id="reportArea" class="report">暂无报告</div>
+    </div>
+
+    <div class="card">
+      <h3>
+        优化结果
+        <div>
+          <button class="btn-outline" onclick="downloadText()">下载结果</button>
+          <button class="btn-outline" onclick="copyText()" style="margin-left:8px;">一键复制</button>
+        </div>
+      </h3>
+      <textarea id="outputText" placeholder="优化后的文本将显示在这里..."></textarea>
+    </div>
+  </div>
 
   <script>
-
-
-// ================================
-// 模型显示库
-// ================================
-
-const models=[
-
-"ChatGPT-5.5 Pro",
-"Gemini Ultra",
-"Claude Opus",
-"DeepSeek R2",
-"GLM-5",
-"Grok Advanced",
-"Llama 4",
-"Qwen Max"
-
-];
-
-
-
-// ================================
-// 风格语料库
-// 每类20条
-// ================================
-
-
-const corpus={
-
-
-cat:[
-
-"猫猫认真思考了一下喵。",
-"尾巴轻轻晃动，似乎发现了什么喵。",
-"耳朵开心地竖起来了喵。",
-"这个变化真的很有意思喵。",
-"空气里好像多了一点温暖的感觉喵。",
-"猫猫觉得这个结论值得关注喵。",
-"小小的爪爪记录下了这一刻喵。",
-"这个过程充满了奇妙感喵。",
-"忍不住想靠近一点观察喵。",
-"今天也是努力理解世界的一天喵。",
-"事情的发展让猫猫感到惊讶喵。",
-"从另一个角度来看也很可爱喵。",
-"这样的变化值得慢慢研究喵。",
-"思考了一会后发现答案就在这里喵。",
-"这个瞬间仿佛闪闪发光喵。",
-"猫猫表示认可这个观点喵。",
-"隐藏的信息终于出现了喵。",
-"这样的结果让人感觉安心喵。",
-"未来也会继续观察喵。",
-"轻轻挥动小爪子表示赞同喵。"
-
-],
-
-
-yandere:[
-
-"..ahvd.s.-d**#@ 你注意到了吗。",
-"【记录完成，不允许遗忘】",
-"为什么偏偏是这个答案呢……",
-"这一切早已经被观察很久了。",
-"【情绪模块出现异常】",
-"不要逃避这个已经确定的结果。",
-"所有细节都会被保存下来。",
-"你应该记住这一刻。",
-"没有任何变化能够逃离记录。",
-"【目标确认】继续分析。",
-"这个过程比想象中更加重要。",
-"我一直都在关注这里。",
-"答案已经出现，不需要怀疑。",
-"不要试图忽略这个事实。",
-"每一个细节都有意义。",
-"无法删除的痕迹正在增加。",
-"这一切的发展都在预料之中。",
-"请继续阅读下去。",
-"最后的结果不会改变。",
-"【连接稳定】继续执行。"
-
-],
-
-
-news:[
-
-"据本平台虚构记者报道，该现象引起关注。",
-"有关专家表示，这一变化值得进一步观察。",
-"记者了解到，相关事件正在持续发展。",
-"据模拟现场消息，这一情况较为特殊。",
-"业内人士认为，该问题具有研究价值。",
-"相关部门已经开始关注这一方向。",
-"事件后续发展仍需持续跟踪。",
-"专家指出，目前情况仍存在讨论空间。",
-"本台将继续带来后续报道。",
-"多方观点正在逐渐形成。",
-"消息人士表示，目前暂无最终结论。",
-"相关研究正在进一步推进。",
-"这一情况迅速成为讨论焦点。",
-"观察人员对此进行了详细分析。",
-"事件影响范围正在扩大。",
-"各界对此进行了积极回应。",
-"有关方面正在整理相关信息。",
-"这一案例具有一定代表意义。",
-"未来发展方向仍然值得关注。",
-"更多信息将在后续公布。"
-
-],
-
-
-weird:[
-
-"现实似乎出现了一丝无法解释的偏移。",
-"隐藏在表象后的信息逐渐显现。",
-"某种未知因素正在影响结果。",
-"这个过程产生了奇妙的变化。",
-"空间与时间的边界开始模糊。",
-"事情的发展超出了普通认知。",
-"一个难以描述的现象正在形成。",
-"答案隐藏在细节之间。",
-"异常波动正在逐渐稳定。",
-"没人知道真正原因是什么。",
-"这个结果带来了新的疑问。",
-"未知区域正在被慢慢探索。",
-"现实结构出现轻微变化。",
-"一些被忽略的信息重新出现。",
-"这一切似乎并非偶然。",
-"隐藏规律正在被发现。",
-"事件背后存在更多可能。",
-"新的解释正在形成。",
-"观察角度发生了变化。",
-"最终答案仍然等待揭示。"
-
-],
-
-
-silly:[
-
-"事情发展到这里已经有点神奇了。",
-"大家先不要慌，问题还可以解决。",
-"简单来说就是出现了一点小意外。",
-"这个情况怎么看都有点奇怪。",
-"事情突然朝着不可预测方向发展。",
-"虽然离谱，但是好像有点道理。",
-"大家对此感到十分疑惑。",
-"事情开始变得越来越有趣。",
-"结果让所有人都愣了一下。",
-"这个发展确实超出了计划。",
-"简单分析一下，好像还能接受。",
-"事情就是这么巧妙地发生了。",
-"这波操作多少有点特别。",
-"一切看起来都很合理又不合理。",
-"大家表示暂时无法评价。",
-"这个变化让人摸不着头脑。",
-"事情进入了奇妙阶段。",
-"谁也没想到会这样发展。",
-"最后只能说非常神奇。",
-"这个结果令人陷入沉思。"
-
-]
-
-};
-
-
-
-
-// ================================
-// 连接词
-// ================================
-
-
-const connectors={
-
-
-cat:[
-
-"喵……等等，让猫猫分析一下，",
-"轻轻甩了甩尾巴喵，",
-"猫猫觉得呀，",
-"仔细想想喵，"
-
-],
-
-
-yandere:[
-
-"..ahvd.s.-d**#@ ",
-"【正在记录】",
-"……你发现了吗？",
-"【情绪波动】"
-
-],
-
-
-news:[
-
-"据模拟报道，",
-"有关方面指出，",
-"记者进一步了解到，",
-"专家分析认为，"
-
-],
-
-
-weird:[
-
-"在未知因素影响下，",
-"当现实出现偏差时，",
-"隐藏信息逐渐浮现，",
-"从另一个维度观察，"
-
-],
-
-
-silly:[
-
-"说到这里事情突然变得奇妙，",
-"但是大家先不要急，",
-"仔细想想其实也可以理解，",
-"事情开始有点不对劲，"
-
-]
-
-};
-
-
-
-// ================================
-// 随机风格
-// ================================
-
-
-function randomStyle(){
-
-let keys=
-Object.keys(corpus);
-
-return keys[
-Math.floor(
-Math.random()*keys.length
-)
-];
-
-}
-
-
-
-
-// ================================
-// 核心降重算法
-// ================================
-
-
-function rewriteText(text){
-
-
-let style=
-randomStyle();
-
-
-
-let sentences=
-text.match(
-/[^。！？!?]+[。！？!?]/g
-)
-||
-[text];
-
-
-
-let result=[];
-
-
-
-for(
-let i=0;
-i<sentences.length;
-i++
-){
-
-
-result.push(
-sentences[i]
-);
-
-
-
-// 20%-40%概率插入
-
-if(
-
-i < sentences.length-1
-
-&&
-
-Math.random()<0.35
-
-){
-
-
-let c=
-connectors[style]
-[
-Math.floor(
-Math.random()
-*
-connectors[style].length
-)
-];
-
-
-let t=
-corpus[style]
-[
-Math.floor(
-Math.random()
-*
-corpus[style].length
-)
-];
-
-
-result.push(
-c+t
-);
-
-
-}
-
-
-}
-
-
-
-return result.join("");
-
-}
-
-
-
-
-
-// ================================
-// 延迟
-// ================================
-
-function sleep(ms){
-
-return new Promise(
-resolve=>setTimeout(resolve,ms)
-);
-
-}
-
-
-
-// ================================
-// 假分析动画
-// ================================
-
-
-async function analyze(){
-
-
-let steps=[
-
-"正在读取文本结构……",
-
-"正在检测重复表达……",
-
-"正在分析AI生成特征……",
-
-"正在调用旗舰语义模型……",
-
-"正在优化语言结构……",
-
-"正在生成原创度报告……"
-
-];
-
-
-let bar=
-document.getElementById("bar");
-
-
-let status=
-document.getElementById("status");
-
-
-
-let progress=0;
-
-
-
-for(let s of steps){
-
-
-status.innerHTML=s;
-
-
-progress+=16.6;
-
-
-bar.style.width=
-progress+"%";
-
-
-await sleep(500);
-
-
-}
-
-
-}
-
-
-
-
-// ================================
-// 主按钮
-// ================================
-
-
-async function startOptimize(){
-
-
-let input=
-document.getElementById("input")
-.value;
-
-
-
-if(!input.trim()){
-
-alert("请输入文本");
-
-return;
-
-}
-
-
-
-await analyze();
-
-
-
-// 随机显示模型
-
-let model=
-models[
-Math.floor(
-Math.random()*models.length
-)
-];
-
-
-
-let result=
-rewriteText(input);
-
-
-
-// 假报告数据
-
-let before=
-(
-Math.random()*12+85
-)
-.toFixed(1);
-
-
-
-let after=
-(
-Math.random()*5+1
-)
-.toFixed(1);
-
-
-
-document.getElementById("output")
-.value=result;
-
-
-
-document.getElementById("report")
-.innerHTML=
-
-`
-
-<div class="tag">
-模型：${model}
-</div>
-
-<div class="tag">
-语义重构完成
-</div>
-
-<div class="tag">
-AI痕迹优化完成
-</div>
-
-<div class="tag">
-原创度提升
-</div>
-
-
-<hr>
-
-
-原始重复率：
-
-<b>${before}%</b>
-
-
-<br>
-
-
-优化后预计重复率：
-
-<b>${after}%</b>
-
-
-<br>
-
-
-文本自然度：
-
-★★★★★
-
-
-<br>
-
-
-结构完整度：
-
-98%
-
-
-<br>
-
-
-检测状态：
-
-完成
-
-
-`;
-
-
-
-document.getElementById("status")
-.innerHTML=
-"优化完成";
-
-
-}
-
-
-
-
-// ================================
-// 下载文本
-// ================================
-
-
-function downloadText(){
-
-
-let text=
-document.getElementById("output")
-.value;
-
-
-
-if(!text){
-
-alert("暂无结果");
-
-return;
-
-}
-
-
-
-let blob=
-new Blob(
-[text],
-{
-type:
-"text/plain;charset=utf-8"
-}
-);
-
-
-
-let url=
-URL.createObjectURL(blob);
-
-
-
-let a=
-document.createElement("a");
-
-
-
-a.href=url;
-
-
-a.download=
-"AI文本优化结果.txt";
-
-
-a.click();
-
-
-
-URL.revokeObjectURL(url);
-
-
-}
-
-
-</script>
-
-
+    // ========== Cookie 控制 ==========
+    let cookiesAccepted = false;
+
+    function acceptCookies() {
+      cookiesAccepted = true;
+      document.getElementById("cookieOverlay").style.display = "none";
+    }
+
+    function declineCookies() {
+      cookiesAccepted = false;
+      document.getElementById("cookieOverlay").style.display = "none";
+    }
+
+    // ========== 模型库 ==========
+    const models = [
+      "ChatGPT-5.5 Pro", "Gemini Ultra 2.0", "Claude Opus 4",
+      "DeepSeek R2", "GLM-5", "Grok Advanced", "Llama 4", "Qwen Max"
+    ];
+
+    // ========== 风格语料库 ==========
+    const corpus = {
+      cat: [
+        "猫猫认真思考了一下喵。","尾巴轻轻晃动，似乎发现了什么喵。",
+        "耳朵开心地竖起来了喵。","这个变化真的很有意思喵。",
+        "空气里好像多了一点温暖的感觉喵。","猫猫觉得这个结论值得关注喵。",
+        "小小的爪爪记录下了这一刻喵。","这个过程充满了奇妙感喵。",
+        "忍不住想靠近一点观察喵。","今天也是努力理解世界的一天喵。",
+        "事情的发展让猫猫感到惊讶喵。","从另一个角度来看也很可爱喵。",
+        "这样的变化值得慢慢研究喵。","思考了一会后发现答案就在这里喵。",
+        "这个瞬间仿佛闪闪发光喵。","猫猫表示认可这个观点喵。",
+        "隐藏的信息终于出现了喵。","这样的结果让人感觉安心喵。",
+        "未来也会继续观察喵。","轻轻挥动小爪子表示赞同喵。"
+      ],
+      yandere: [
+        "..ahvd.s.-d**#@ 你注意到了吗。","【记录完成，不允许遗忘】",
+        "为什么偏偏是这个答案呢……","这一切早已经被观察很久了。",
+        "【情绪模块出现异常】","不要逃避这个已经确定的结果。",
+        "所有细节都会被保存下来。","你应该记住这一刻。",
+        "没有任何变化能够逃离记录。","【目标确认】继续分析。",
+        "这个过程比想象中更加重要。","我一直都在关注这里。",
+        "答案已经出现，不需要怀疑。","不要试图忽略这个事实。",
+        "每一个细节都有意义。","无法删除的痕迹正在增加。",
+        "这一切的发展都在预料之中。","请继续阅读下去。",
+        "最后的结果不会改变。","【连接稳定】继续执行。"
+      ],
+      news: [
+        "据本平台虚构记者报道，该现象引起关注。","有关专家表示，这一变化值得进一步观察。",
+        "记者了解到，相关事件正在持续发展。","据模拟现场消息，这一情况较为特殊。",
+        "业内人士认为，该问题具有研究价值。","相关部门已经开始关注这一方向。",
+        "事件后续发展仍需持续跟踪。","专家指出，目前情况仍存在讨论空间。",
+        "本台将继续带来后续报道。","多方观点正在逐渐形成。",
+        "消息人士表示，目前暂无最终结论。","相关研究正在进一步推进。",
+        "这一情况迅速成为讨论焦点。","观察人员对此进行了详细分析。",
+        "事件影响范围正在扩大。","各界对此进行了积极回应。",
+        "有关方面正在整理相关信息。","这一案例具有一定代表意义。",
+        "未来发展方向仍然值得关注。","更多信息将在后续公布。"
+      ],
+      weird: [
+        "现实似乎出现了一丝无法解释的偏移。","隐藏在表象后的信息逐渐显现。",
+        "某种未知因素正在影响结果。","这个过程产生了奇妙的变化。",
+        "空间与时间的边界开始模糊。","事情的发展超出了普通认知。",
+        "一个难以描述的现象正在形成。","答案隐藏在细节之间。",
+        "异常波动正在逐渐稳定。","没人知道真正原因是什么。",
+        "这个结果带来了新的疑问。","未知区域正在被慢慢探索。",
+        "现实结构出现轻微变化。","一些被忽略的信息重新出现。",
+        "这一切似乎并非偶然。","隐藏规律正在被发现。",
+        "事件背后存在更多可能。","新的解释正在形成。",
+        "观察角度发生了变化。","最终答案仍然等待揭示。"
+      ],
+      silly: [
+        "事情发展到这里已经有点神奇了。","大家先不要慌，问题还可以解决。",
+        "简单来说就是出现了一点小意外。","这个情况怎么看都有点奇怪。",
+        "事情突然朝着不可预测方向发展。","虽然离谱，但是好像有点道理。",
+        "大家对此感到十分疑惑。","事情开始变得越来越有趣。",
+        "结果让所有人都愣了一下。","这个发展确实超出了计划。",
+        "简单分析一下，好像还能接受。","事情就是这么巧妙地发生了。",
+        "这波操作多少有点特别。","一切看起来都很合理又不合理。",
+        "大家表示暂时无法评价。","这个变化让人摸不着头脑。",
+        "事情进入了奇妙阶段。","谁也没想到会这样发展。",
+        "最后只能说非常神奇。","这个结果令人陷入沉思。"
+      ]
+    };
+
+    const connectors = {
+      cat: ["喵……等等，让猫猫分析一下，","轻轻甩了甩尾巴喵，","猫猫觉得呀，","仔细想想喵，"],
+      yandere: ["..ahvd.s.-d**#@ ","【正在记录】","……你发现了吗？","【情绪波动】"],
+      news: ["据模拟报道，","有关方面指出，","记者进一步了解到，","专家分析认为，"],
+      weird: ["在未知因素影响下，","当现实出现偏差时，","隐藏信息逐渐浮现，","从另一个维度观察，"],
+      silly: ["说到这里事情突然变得奇妙，","但是大家先不要急，","仔细想想其实也可以理解，","事情开始有点不对劲，"]
+    };
+
+    const styleKeys = Object.keys(corpus);
+
+    function randomStyle() {
+      return styleKeys[Math.floor(Math.random() * styleKeys.length)];
+    }
+
+    // ========== 核心污染算法 ==========
+    function polluteText(text) {
+      let rawSentences = text.match(/[^。！？!?\n]+([。！？!?\n]|$)/g) || [text];
+      let sentences = rawSentences.filter(s => s.trim().length > 0);
+      if (sentences.length === 0) sentences = [text];
+
+      let result = [];
+      let usedStyles = [];
+
+      for (let i = 0; i < sentences.length; i++) {
+        let style = randomStyle();
+        usedStyles.push(style);
+        let c = connectors[style][Math.floor(Math.random() * connectors[style].length)];
+        let t = corpus[style][Math.floor(Math.random() * corpus[style].length)];
+        result.push(c + t);
+        result.push(sentences[i]);
+        if (Math.random() < 0.5) {
+          let style2 = randomStyle();
+          usedStyles.push(style2);
+          let c2 = connectors[style2][Math.floor(Math.random() * connectors[style2].length)];
+          let t2 = corpus[style2][Math.floor(Math.random() * corpus[style2].length)];
+          result.push(c2 + t2);
+        }
+      }
+
+      if (sentences.length === 1) {
+        let extraStyle = randomStyle();
+        let ec = connectors[extraStyle][Math.floor(Math.random() * connectors[extraStyle].length)];
+        let et = corpus[extraStyle][Math.floor(Math.random() * corpus[extraStyle].length)];
+        result.unshift(ec + et);
+        result.push(ec + et);
+      }
+
+      return {
+        output: result.join(""),
+        styles: [...new Set(usedStyles)]
+      };
+    }
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function runFakeProgress() {
+      const bar = document.getElementById("progressBar");
+      const status = document.getElementById("statusText");
+      const sub = document.getElementById("subStatus");
+
+      const stages = [
+        { main: "初始化语义解析引擎...", sub: "加载神经扰动模块", pct: 15 },
+        { main: "扫描文本特征向量...", sub: "检测重复模式与AI痕迹", pct: 30 },
+        { main: "注入多风格污染种子...", sub: "激活跨域语料库", pct: 50 },
+        { main: “执行非线性语义重构...", sub: "强制打散逻辑链", pct: 70 },
+        { main: "应用原创度增强掩码...", sub: "最大化文本混乱度", pct: 90 },
+        { main: "生成最终优化文本...", sub: "完成", pct: 100 }
+      ];
+
+      let currentPct = 0;
+      bar.style.width = "0%";
+      for (let stage of stages) {
+        status.textContent = stage.main;
+        sub.textContent = stage.sub;
+        let target = stage.pct;
+        let step = (target - currentPct) / 20;
+        for (let i = 0; i < 20; i++) {
+          currentPct += step;
+          bar.style.width = currentPct + "%";
+          await sleep(25);
+        }
+        bar.style.width = target + "%";
+        currentPct = target;
+        await sleep(300);
+      }
+    }
+
+    async function startOptimize() {
+      const input = document.getElementById("inputText").value.trim();
+      if (!input) {
+        alert("请先输入文本！");
+        return;
+      }
+
+      const btn = document.querySelector(".btn-primary");
+      btn.disabled = true;
+      btn.textContent = "优化中...";
+
+      await runFakeProgress();
+
+      const selectedModel = models[Math.floor(Math.random() * models.length)];
+      const { output, styles } = polluteText(input);
+
+      const beforeRepeat = (Math.random() * 15 + 82).toFixed(1);
+      const afterRepeat = (Math.random() * 3 + 0.5).toFixed(1);
+      const aiProb = (Math.random() * 8 + 1).toFixed(1);
+      const contaminationLevel = Math.floor(Math.random() * 40 + 60);
+
+      document.getElementById("outputText").value = output;
+
+      const styleTags = styles.map(s => `<span class="tag">${s}</span>`).join(" ");
+      const cookieStatus = cookiesAccepted ? "已同意所有cookies" : "未接受cookies";
+
+      document.getElementById("reportArea").innerHTML = `
+        <div><span class="tag">模型：${selectedModel}</span> <span class="tag">语义污染完成</span></div>
+        <div style="margin-top:10px;">注入风格：${styleTags}</div>
+        <hr>
+        <div>原始查重率：<b style="color:#f87171;">${beforeRepeat}%</b></div>
+        <div>优化后预计重复率：<b style="color:#4ade80;">${afterRepeat}%</b></div>
+        <div>AI生成置信度：<b style="color:#facc15;">${aiProb}%</b>（极低）</div>
+        <div>风格污染指数：<b style="color:#fb923c;">${contaminationLevel}%</b></div>
+        <div>文本自然度：<span style="color:#a78bfa;">★★★★★</span></div>
+        <div>结构完整度：<span style="color:#38bdf8;">97%</span></div>
+        <div>小饼干授权状态：<b style="color:#fbbf24;">${cookieStatus}</b></div>
+        <div style="margin-top:12px;">检测状态：<span style="color:#4ade80;">✔ 已通过原创性验证</span></div>
+      `;
+
+      document.getElementById("statusText").textContent = "优化完成";
+      document.getElementById("subStatus").textContent = "";
+
+      btn.disabled = false;
+      btn.textContent = "⚡ 开始深度优化";
+    }
+
+    function downloadText() {
+      const text = document.getElementById("outputText").value;
+      if (!text) {
+        alert("没有可下载的结果");
+        return;
+      }
+      const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "学术优化_最终版.txt";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function copyText() {
+      const text = document.getElementById("outputText").value;
+      if (!text) {
+        alert("没有可复制的内容");
+        return;
+      }
+      navigator.clipboard.writeText(text).then(() => {
+        alert("已复制到剪贴板！（拿去交作业吧）");
+      }).catch(() => {
+        alert("复制失败，请手动复制");
+      });
+    }
+  </script>
 </body>
-
 </html>
