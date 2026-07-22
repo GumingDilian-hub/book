@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>
+AI文本原创度优化系统
+</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+background:#f5f7fb;
+font-family:
+"Microsoft YaHei",
+Arial;
+color:#222;
+}
+
+
+.container{
+
+max-width:1000px;
+margin:40px auto;
+padding:20px;
+
+}
+
+
+.header{
+
+background:white;
+padding:30px;
+border-radius:16px;
+box-shadow:0 5px 20px #ddd;
+
+}
+
+
+.logo{
+
+font-size:30px;
+font-weight:bold;
+color:#2563eb;
+
+}
+
+
+.subtitle{
+
+color:#666;
+margin-top:10px;
+
+}
+
+
+
+.card{
+
+background:white;
+margin-top:20px;
+padding:25px;
+border-radius:16px;
+
+box-shadow:
+0 5px 20px rgba(0,0,0,.08);
+
+}
+
+
+
+textarea{
+
+width:100%;
+height:220px;
+
+border:1px solid #ddd;
+
+border-radius:12px;
+
+padding:15px;
+
+font-size:16px;
+
+resize:vertical;
+
+}
+
+
+
+select,
+button{
+
+padding:12px;
+
+border-radius:10px;
+
+border:1px solid #ddd;
+
+font-size:15px;
+
+}
+
+
+
+button{
+
+background:#2563eb;
+
+color:white;
+
+cursor:pointer;
+
+border:none;
+
+padding-left:30px;
+padding-right:30px;
+
+}
+
+
+
+button:hover{
+
+opacity:.85;
+
+}
+
+
+
+.progress{
+
+height:20px;
+
+background:#e5e7eb;
+
+border-radius:20px;
+
+overflow:hidden;
+
+}
+
+
+
+.progress-bar{
+
+height:100%;
+
+width:0%;
+
+background:#22c55e;
+
+transition:.4s;
+
+}
+
+
+
+.report{
+
+line-height:2;
+
+}
+
+
+
+.tag{
+
+display:inline-block;
+
+background:#eff6ff;
+
+color:#2563eb;
+
+padding:5px 12px;
+
+border-radius:20px;
+
+margin:5px;
+
+}
+
+
+
+.small{
+
+font-size:13px;
+
+color:#888;
+
+}
+
+
+
+.result-title{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+}
+
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<div class="header">
+
+<div class="logo">
+📄 AI文本原创度优化系统
+</div>
+
+<div class="subtitle">
+智能语义分析 · 深度结构优化 · 原创度提升
+</div>
+
+</div>
+
+
+
+<div class="card">
+
+<h3>
+AI优化引擎
+</h3>
+
+
+<select id="model">
+
+
+<option>
+ChatGPT-5.5 Pro
+</option>
+
+
+<option>
+Gemini Ultra
+</option>
+
+
+<option>
+Claude Opus
+</option>
+
+
+<option>
+DeepSeek R2
+</option>
+
+
+<option>
+GLM-5
+</option>
+
+
+<option>
+Grok Advanced
+</option>
+
+
+<option>
+Llama 4
+</option>
+
+
+<option>
+Qwen Max
+</option>
+
+
+</select>
+
+
+<p class="small">
+
+当前采用旗舰级语义优化模型
+
+</p>
+
+
+</div>
+
+
+
+
+<div class="card">
+
+
+<h3>
+请输入文本
+</h3>
+
+
+<textarea id="input"
+placeholder="请输入需要优化的作文、论文或文章内容……">
+</textarea>
+
+
+<br><br>
+
+
+<button onclick="startOptimize()">
+
+开始智能优化
+
+</button>
+
+
+</div>
+
+
+
+
+<div class="card">
+
+
+<h3>
+分析进度
+</h3>
+
+
+<div class="progress">
+
+<div class="progress-bar"
+id="bar">
+
+</div>
+
+</div>
+
+
+<p id="status">
+
+等待分析任务...
+
+</p>
+
+
+</div>
+
+
+
+
+<div class="card">
+
+
+<h3>
+检测报告
+</h3>
+
+
+<div class="report"
+id="report">
+
+尚未生成报告
+
+</div>
+
+
+</div>
+
+
+
+
+<div class="card">
+
+
+<div class="result-title">
+
+<h3>
+优化结果
+</h3>
+
+
+<button onclick="downloadText()">
+
+下载报告
+
+</button>
+
+
+</div>
+
+
+
+<textarea id="output"
+placeholder="优化后的文本将在这里显示">
+
+</textarea>
+
+
+</div>
+
+
+</div>
+
+
+<script>
+
+
+// ===============================
+// 假模型系统
+// ===============================
+
+
+const modelNames=[
+
+"ChatGPT-5.5 Pro",
+"Gemini Ultra",
+"Claude Opus",
+"DeepSeek R2",
+"GLM-5",
+"Grok Advanced",
+"Llama 4",
+"Qwen Max"
+
+];
+
+
+
+// ===============================
+// 风格语料库
+// ===============================
+
+
+const corpus={
+
+
+cat:[
+
+"这件事情真的让人忍不住摇了摇尾巴喵～",
+
+"想到这里，小小的心脏都开始扑通扑通跳起来喵。",
+
+"这个过程充满了软乎乎的感觉喵。",
+
+"世界好像也因此变得温暖了一点点喵。"
+
+],
+
+
+yandere:[
+
+"（轻轻注视着这一切）你不会忘记这件事吧？",
+
+"■■请不要离开这个答案■■",
+
+"所有变化都已经被记录下来，无法逃避。",
+
+"为什么事情会发展成这样呢？"
+
+],
+
+
+news:[
+
+"据本平台虚构记者报道，这一现象引起广泛关注。",
+
+"有关专家表示，目前事件仍处于持续发展阶段。",
+
+"本台记者将继续跟进这一离奇事件。",
+
+"相关部门对此进行了高度重视。"
+
+],
+
+
+weird:[
+
+"空气中似乎出现了一种无法解释的异常波动。",
+
+"这一瞬间，现实的边界产生了轻微偏移。",
+
+"没人知道事情为何会朝这个方向发展。",
+
+"隐藏在表象之下的秘密逐渐浮现。"
+
+],
+
+
+silly:[
+
+"然后事情就变得有一点点奇怪但又很好玩。",
+
+"大家都觉得这个情况好像哪里不太对。",
+
+"事情发展到这里已经完全超出预期。",
+
+"简单来说，就是发生了一些令人迷惑的事情。"
+
+]
+
+
+};
+
+
+
+// ===============================
+// 普通AI作文高频词替换
+// ===============================
+
+
+const replaceDict={
+
+
+"随着时代的发展":
+"在时间不断向前推进的过程中",
+
+
+"不可否认":
+"从多个角度来看",
+
+
+"因此":
+"基于以上情况",
+
+
+"总而言之":
+"经过综合分析后",
+
+
+"非常重要":
+"具有较高的现实意义",
+
+
+"促进":
+"推动"
+
+};
+
+
+
+
+// ===============================
+// 随机选择污染人格
+// ===============================
+
+
+function randomStyle(){
+
+
+let keys=
+Object.keys(corpus);
+
+
+return keys[
+Math.floor(
+Math.random()*keys.length
+)
+];
+
+
+}
+
+
+
+
+// ===============================
+// 替换算法
+// ===============================
+
+
+function rewriteText(text,level){
+
+
+
+// 1. 替换AI高频词
+
+for(let key in replaceDict){
+
+if(Math.random()<0.6){
+
+text=text.replaceAll(
+key,
+replaceDict[key]
+);
+
+}
+
+}
+
+
+
+// 2. 分句
+
+let sentences=
+text.split(
+/([。！？])/);
+
+
+
+
+let style=
+randomStyle();
+
+
+
+let result="";
+
+
+
+for(let i=0;i<sentences.length;i++){
+
+
+result+=sentences[i];
+
+
+
+// 每几个句子插入一次语料
+
+if(
+sentences[i].length>8
+&&
+Math.random()<level
+){
+
+let arr=
+corpus[style];
+
+
+let add=
+arr[
+Math.floor(
+Math.random()*arr.length
+)
+];
+
+
+result+=" "+add;
+
+}
+
+
+
+}
+
+
+
+// 猫娘特殊处理
+
+if(style==="cat"){
+
+result=
+result.replace(
+/。/g,
+"喵。"
+);
+
+}
+
+
+
+// 病娇增加符号
+
+if(style==="yandere"){
+
+result=
+"【SYSTEM ERROR】\n"
++result
++"\n■■ END ■■";
+
+}
+
+
+
+return result;
+
+
+}
+
+
+
+
+// ===============================
+// 假检测动画
+// ===============================
+
+
+function sleep(ms){
+
+return new Promise(
+r=>setTimeout(r,ms)
+);
+
+}
+
+
+
+async function fakeAnalyze(){
+
+
+let steps=[
+
+"正在读取文本结构……",
+
+"正在分析AI生成痕迹……",
+
+"正在建立语义映射……",
+
+"正在调用旗舰模型……",
+
+"正在优化表达方式……",
+
+"正在生成最终报告……"
+
+];
+
+
+let p=0;
+
+
+for(let s of steps){
+
+
+document.getElementById("status")
+.innerHTML=s;
+
+
+p+=16;
+
+
+document.getElementById("bar")
+.style.width=p+"%";
+
+
+await sleep(500);
+
+}
+
+
+}
+
+
+
+
+// ===============================
+// 主程序
+// ===============================
+
+
+async function startOptimize(){
+
+
+
+let text=
+document.getElementById("input")
+.value;
+
+
+
+if(!text){
+
+alert("请输入文本");
+
+return;
+
+}
+
+
+
+await fakeAnalyze();
+
+
+
+let model=
+document.getElementById("model")
+.value;
+
+
+
+let old=
+(
+Math.random()*15+82
+)
+.toFixed(1);
+
+
+
+let level=
+Math.random()*0.35+0.25;
+
+
+
+let result=
+rewriteText(
+text,
+level
+);
+
+
+
+let newRate=
+(
+Math.random()*5+2
+)
+.toFixed(1);
+
+
+
+
+document.getElementById("output")
+.value=result;
+
+
+
+
+document.getElementById("report")
+.innerHTML=
+
+`
+
+<div class="tag">
+模型：${model}
+</div>
+
+<div class="tag">
+语义优化完成
+</div>
+
+<div class="tag">
+结构重组完成
+</div>
+
+
+<hr>
+
+
+原始AI重复率：
+
+<b>${old}%</b>
+
+<br>
+
+
+优化后预计重复率：
+
+<b>${newRate}%</b>
+
+
+<br>
+
+
+文本自然度：
+
+★★★★★
+
+
+<br>
+
+
+模型分析状态：
+
+完成
+
+`;
+
+
+
+}
+
+
+
+
+// ===============================
+// 下载
+// ===============================
+
+
+function downloadText(){
+
+
+let text=
+document.getElementById("output")
+.value;
+
+
+
+let blob=
+new Blob(
+[text],
+{
+type:"text/plain;charset=utf-8"
+}
+);
+
+
+
+let a=
+document.createElement("a");
+
+
+
+a.href=
+URL.createObjectURL(blob);
+
+
+
+a.download=
+"AI优化结果.txt";
+
+
+
+a.click();
+
+
+}
+
+
+
+</script>
+
+
+</body>
+
+</html>
