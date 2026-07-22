@@ -7,292 +7,273 @@
   <style>
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
-      background: radial-gradient(circle at 20% 30%, #0f172a, #020617);
+      background: #f0f2f5;
       font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
-      color: #e2e8f0;
+      color: #1e1e2e;
       min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding-top: 20px;
     }
 
     .container {
+      width: 100%;
       max-width: 1000px;
-      margin: 30px auto;
-      padding: 20px;
+      padding: 0 20px 100px;
+    }
+
+    /* 顶部深色标题栏 */
+    .title-bar {
+      background: #1e1e2e;
+      color: #e0e0e0;
+      padding: 14px 24px;
+      border-radius: 12px 12px 0 0;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .title-bar span {
+      color: #8ab4f8;
     }
 
     .card {
-      background: rgba(15, 23, 42, 0.8);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(99, 102, 241, 0.25);
-      border-radius: 20px;
+      background: #ffffff;
+      border: 1px solid #d0d5dd;
+      border-top: none;
       padding: 24px;
+      margin-bottom: 0;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+      transition: 0.2s;
+    }
+
+    .card:last-of-type {
+      border-radius: 0 0 12px 12px;
       margin-bottom: 20px;
-      box-shadow: 0 0 25px rgba(99, 102, 241, 0.15);
-      transition: 0.3s;
     }
 
-    .card:hover {
-      border-color: rgba(99, 102, 241, 0.6);
-      box-shadow: 0 0 35px rgba(99, 102, 241, 0.3);
+    .card:first-of-type {
+      border-radius: 0;
     }
 
-    .logo {
-      font-size: 32px;
-      font-weight: 800;
-      background: linear-gradient(135deg, #818cf8, #38bdf8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: 1px;
-    }
-
-    .sub {
-      color: #94a3b8;
-      margin-top: 8px;
-      font-size: 14px;
+    .card h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: #1e1e2e;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
     textarea {
       width: 100%;
       height: 200px;
-      background: rgba(2, 6, 23, 0.7);
-      border: 1px solid rgba(99, 102, 241, 0.4);
-      border-radius: 14px;
-      padding: 16px;
-      font-size: 15px;
-      color: #e2e8f0;
+      background: #f9fafb;
+      border: 1px solid #d0d5dd;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 14px;
+      color: #1e1e2e;
       resize: vertical;
       outline: none;
-      transition: 0.3s;
+      transition: 0.2s;
+      font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
     }
 
     textarea:focus {
-      border-color: #818cf8;
-      box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
     }
 
     select {
-      background: #0f172a;
-      border: 1px solid #4b5563;
-      border-radius: 10px;
-      padding: 10px 18px;
-      color: #e2e8f0;
+      background: #ffffff;
+      border: 1px solid #d0d5dd;
+      border-radius: 8px;
+      padding: 10px 14px;
       font-size: 14px;
+      color: #1e1e2e;
       outline: none;
       cursor: pointer;
+      margin-bottom: 8px;
     }
 
     button {
-      padding: 12px 28px;
-      border-radius: 12px;
+      padding: 10px 22px;
+      border-radius: 8px;
       border: none;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.3s;
-      letter-spacing: 0.5px;
+      transition: all 0.2s;
+      letter-spacing: 0.3px;
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, #6366f1, #3b82f6);
-      color: white;
-      box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+      background: #1e1e2e;
+      color: #ffffff;
+      border: 1px solid #1e1e2e;
     }
 
     .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 30px rgba(99, 102, 241, 0.7);
+      background: #2d2d44;
     }
 
     .btn-outline {
       background: transparent;
-      border: 1px solid #6366f1;
-      color: #a5b4fc;
-      margin-left: 12px;
-      padding: 10px 22px;
+      border: 1px solid #1e1e2e;
+      color: #1e1e2e;
+      margin-left: 10px;
+      padding: 8px 18px;
     }
 
     .btn-outline:hover {
-      background: rgba(99, 102, 241, 0.15);
+      background: #f0f2f5;
     }
 
     .progress {
-      height: 24px;
-      background: rgba(2, 6, 23, 0.8);
-      border-radius: 20px;
+      height: 20px;
+      background: #e5e7eb;
+      border-radius: 10px;
       overflow: hidden;
-      border: 1px solid #4b5563;
+      border: 1px solid #d0d5dd;
       margin: 12px 0;
     }
 
     .progress-bar {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, #22c55e, #10b981, #14b8a6);
-      box-shadow: 0 0 15px #22c55e;
+      background: #1e1e2e;
       transition: width 0.3s ease;
-      border-radius: 20px;
+      border-radius: 10px;
     }
 
     .tag {
       display: inline-block;
-      padding: 6px 16px;
-      margin: 5px;
+      padding: 4px 12px;
+      margin: 3px;
       border-radius: 20px;
-      background: rgba(99, 102, 241, 0.2);
-      border: 1px solid rgba(99, 102, 241, 0.5);
-      color: #c7d2fe;
-      font-size: 13px;
-      backdrop-filter: blur(4px);
+      background: #f0f2f5;
+      border: 1px solid #d0d5dd;
+      color: #1e1e2e;
+      font-size: 12px;
     }
 
     .report {
       line-height: 2.2;
-      color: #cbd5e1;
+      font-size: 14px;
+      color: #3a3a4a;
     }
 
     .small {
-      font-size: 13px;
-      color: #64748b;
+      font-size: 12px;
+      color: #6b7280;
       margin-top: 8px;
     }
 
     hr {
-      border-color: rgba(99, 102, 241, 0.2);
-      margin: 18px 0;
+      border: none;
+      border-top: 1px solid #e5e7eb;
+      margin: 16px 0;
     }
 
-    h3 {
-      color: #cbd5e1;
-      margin-top: 0;
-      font-weight: 600;
+    /* Cookie 底栏 - 纯黑学术风格 */
+    .cookie-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #111111;
+      color: #d4d4d4;
       display: flex;
       align-items: center;
       justify-content: space-between;
-    }
-
-    /* Cookie 弹窗样式 */
-    .cookie-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(6px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      padding: 16px 32px;
       z-index: 9999;
-      animation: fadeIn 0.3s ease;
+      font-size: 14px;
+      border-top: 1px solid #333;
+      box-shadow: 0 -4px 12px rgba(0,0,0,0.3);
+      flex-wrap: wrap;
+      gap: 16px;
     }
 
-    .cookie-box {
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid rgba(99, 102, 241, 0.6);
-      border-radius: 24px;
-      padding: 32px;
-      max-width: 480px;
-      width: 90%;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(99, 102, 241, 0.3);
-      color: #e2e8f0;
-      text-align: center;
+    .cookie-text {
+      flex: 1;
+      min-width: 200px;
     }
 
-    .cookie-box h2 {
-      margin-top: 0;
-      font-size: 24px;
-      background: linear-gradient(135deg, #fbbf24, #f59e0b);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .cookie-box p {
-      color: #cbd5e1;
-      font-size: 15px;
-      line-height: 1.6;
-      margin: 16px 0;
+    .cookie-text strong {
+      color: #ffffff;
     }
 
     .cookie-buttons {
       display: flex;
-      flex-direction: column;
       gap: 12px;
-      margin-top: 24px;
+      align-items: center;
     }
 
     .cookie-btn {
-      padding: 14px;
-      border-radius: 12px;
+      padding: 8px 20px;
+      border-radius: 6px;
       font-weight: 600;
-      font-size: 16px;
+      font-size: 13px;
       cursor: pointer;
-      transition: all 0.3s;
-      border: none;
+      transition: 0.2s;
+      border: 1px solid #444;
+      background: #222;
+      color: #ddd;
     }
 
     .cookie-accept {
-      background: linear-gradient(135deg, #f59e0b, #d97706);
-      color: white;
-      box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+      background: #ffffff;
+      color: #111111;
+      border: 1px solid #ffffff;
     }
 
     .cookie-accept:hover {
-      transform: scale(1.02);
-      box-shadow: 0 0 25px rgba(245, 158, 11, 0.7);
+      background: #e0e0e0;
     }
 
     .cookie-decline {
       background: transparent;
-      border: 1px solid #64748b;
-      color: #94a3b8;
+      color: #aaa;
     }
 
     .cookie-decline:hover {
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      color: #fff;
+      border-color: #666;
     }
   </style>
 </head>
 <body>
-  <!-- Cookie 申请弹窗 -->
-  <div class="cookie-overlay" id="cookieOverlay">
-    <div class="cookie-box">
-      <h2>小饼干申请</h2>
-      <p>
-        本网站使用<strong>小饼干（Cookie）</strong>来提升您的浏览体验。<br>
-        这些小饼干包括：<br>
-        <span style="color:#fbbf24;">巧克力曲奇</span>（功能小饼干）<br>
-        <span style="color:#fbbf24;">燕麦饼干</span>（性能小饼干）<br>
-        <span style="color:#fbbf24;">美味小饼干</span>（广告小饼干）<br>
-        继续使用即表示您同意我们<strong>放置所有小饼干</strong>。
-      </p>
-      <p style="font-size:13px; color:#64748b;">
-        我们尊重您的选择，您也可以拒绝这些美味的小饼干。
-      </p>
-      <div class="cookie-buttons">
-        <button class="cookie-btn cookie-accept" onclick="acceptCookies()">
-          同意所有Cookies
-        </button>
-        <button class="cookie-btn cookie-decline" onclick="declineCookies()">
-          不吃小饼干
-        </button>
-      </div>
+  <!-- Cookie 底部通知栏 -->
+  <div class="cookie-bar" id="cookieBar">
+    <div class="cookie-text">
+      本网站使用<strong>小饼干（Cookie）</strong>来保障核心功能运行、分析流量并优化体验。继续使用即表示您同意我们放置这些必要的小饼干。您可以在设置中管理偏好。
+    </div>
+    <div class="cookie-buttons">
+      <button class="cookie-btn cookie-accept" onclick="acceptCookies()">同意所有Cookies</button>
+      <button class="cookie-btn cookie-decline" onclick="declineCookies()">不要！</button>
     </div>
   </div>
 
   <div class="container">
-    <div class="card">
-      <div class="logo">📄 AI文本原创度优化系统 <span style="font-size:16px; color:#818cf8;">Pro</span></div>
-      <div class="sub">多模态语义混淆 · 跨风格污染注入 · 原创度强制提升</div>
+    <!-- 深色标题栏 -->
+    <div class="title-bar">
+      AI文本原创度优化系统 <span>Pro</span>
+      <span style="font-size:13px; color:#a0a0b0;">多模态语义混淆 · 原创度强制提升</span>
     </div>
 
+    <!-- 引擎卡片 -->
     <div class="card">
       <h3>优化引擎</h3>
       <select id="modelSelect">
@@ -308,27 +289,31 @@
       <p class="small">当前调用旗舰语义污染模型，输出结果将完全无法被查重识别。</p>
     </div>
 
+    <!-- 输入卡片 -->
     <div class="card">
       <h3>输入文本</h3>
-      <textarea id="inputText" placeholder="在此粘贴需要「优化」的作文、论文或文章..."></textarea>
+      <textarea id="inputText" placeholder="在此粘贴需要优化的作文、论文或文章..."></textarea>
       <br><br>
       <button class="btn-primary" onclick="startOptimize()">开始深度优化</button>
     </div>
 
+    <!-- 进度卡片 -->
     <div class="card">
-      <h3>📊 实时分析进度</h3>
+      <h3>实时分析进度</h3>
       <div class="progress">
         <div class="progress-bar" id="progressBar"></div>
       </div>
-      <p id="statusText" style="color:#94a3b8;">等待任务...</p>
-      <div id="subStatus" style="font-size:13px; color:#6366f1; min-height:20px;"></div>
+      <p id="statusText" style="color:#4b5563;">等待任务...</p>
+      <div id="subStatus" style="font-size:12px; color:#6366f1; min-height:20px;"></div>
     </div>
 
+    <!-- 报告卡片 -->
     <div class="card">
-      <h3>📋 检测报告</h3>
+      <h3>检测报告</h3>
       <div id="reportArea" class="report">暂无报告</div>
     </div>
 
+    <!-- 结果卡片 -->
     <div class="card">
       <h3>
         优化结果
@@ -347,12 +332,14 @@
 
     function acceptCookies() {
       cookiesAccepted = true;
-      document.getElementById("cookieOverlay").style.display = "none";
+      const bar = document.getElementById("cookieBar");
+      if (bar) bar.style.display = "none";
     }
 
     function declineCookies() {
       cookiesAccepted = false;
-      document.getElementById("cookieOverlay").style.display = "none";
+      const bar = document.getElementById("cookieBar");
+      if (bar) bar.style.display = "none";
     }
 
     // ========== 模型库 ==========
@@ -490,8 +477,8 @@
       const stages = [
         { main: "初始化语义解析引擎...", sub: "加载神经扰动模块", pct: 15 },
         { main: "扫描文本特征向量...", sub: "检测重复模式与AI痕迹", pct: 30 },
-        { main: "注入多风格污染种子...", sub: "激活跨域语料库", pct: 50 },
-        { main: “执行非线性语义重构...", sub: "强制打散逻辑链", pct: 70 },
+        { main: "注入多风格污染种子...", sub: "激活跨域语料库(猫娘/病娇/新闻...)", pct: 50 },
+        { main: "执行非线性语义重构...", sub: "强制打散逻辑链", pct: 70 },
         { main: "应用原创度增强掩码...", sub: "最大化文本混乱度", pct: 90 },
         { main: "生成最终优化文本...", sub: "完成", pct: 100 }
       ];
@@ -538,27 +525,27 @@
       document.getElementById("outputText").value = output;
 
       const styleTags = styles.map(s => `<span class="tag">${s}</span>`).join(" ");
-      const cookieStatus = cookiesAccepted ? "已同意所有cookies" : "未接受cookies";
+      const cookieStatus = cookiesAccepted ? "已同意所有小饼干" : "仅必要小饼干";
 
       document.getElementById("reportArea").innerHTML = `
         <div><span class="tag">模型：${selectedModel}</span> <span class="tag">语义污染完成</span></div>
         <div style="margin-top:10px;">注入风格：${styleTags}</div>
         <hr>
-        <div>原始查重率：<b style="color:#f87171;">${beforeRepeat}%</b></div>
-        <div>优化后预计重复率：<b style="color:#4ade80;">${afterRepeat}%</b></div>
-        <div>AI生成置信度：<b style="color:#facc15;">${aiProb}%</b>（极低）</div>
-        <div>风格污染指数：<b style="color:#fb923c;">${contaminationLevel}%</b></div>
-        <div>文本自然度：<span style="color:#a78bfa;">★★★★★</span></div>
-        <div>结构完整度：<span style="color:#38bdf8;">97%</span></div>
-        <div>小饼干授权状态：<b style="color:#fbbf24;">${cookieStatus}</b></div>
-        <div style="margin-top:12px;">检测状态：<span style="color:#4ade80;">✔ 已通过原创性验证</span></div>
+        <div>原始查重率：<b style="color:#b91c1c;">${beforeRepeat}%</b></div>
+        <div>优化后预计重复率：<b style="color:#166534;">${afterRepeat}%</b></div>
+        <div>AI生成置信度：<b style="color:#b45309;">${aiProb}%</b>（极低）</div>
+        <div>风格污染指数：<b style="color:#9a3412;">${contaminationLevel}%</b></div>
+        <div>文本自然度：<span style="color:#6b21a8;">高</span></div>
+        <div>结构完整度：97%</div>
+        <div>小饼干授权状态：<b>${cookieStatus}</b></div>
+        <div style="margin-top:12px;">检测状态：已通过原创性验证</div>
       `;
 
       document.getElementById("statusText").textContent = "优化完成";
       document.getElementById("subStatus").textContent = "";
 
       btn.disabled = false;
-      btn.textContent = "⚡ 开始深度优化";
+      btn.textContent = "开始深度优化";
     }
 
     function downloadText() {
@@ -583,7 +570,7 @@
         return;
       }
       navigator.clipboard.writeText(text).then(() => {
-        alert("已复制到剪贴板！（拿去交作业吧）");
+        alert("已复制到剪贴板！");
       }).catch(() => {
         alert("复制失败，请手动复制");
       });
